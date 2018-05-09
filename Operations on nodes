@@ -1,0 +1,409 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<cstdlib>
+using namespace std;
+struct node {
+	float val;
+	node*next = NULL;
+	node*prev = NULL;
+};
+void add_by_place_prev(node * &head, int n, float valu)
+{
+	bool range = 0;
+	node *tmp = head;
+	for (int i = 0; i<n; i++)
+	{
+		tmp = tmp->next;
+		if (tmp == NULL)
+		{
+			cout << " out of the range\n";
+			zakres = 1;
+			break;
+
+		}
+
+
+	}
+	if (range != 1) {
+		node * dod = new node;
+		dod->next = tmp;
+		dod->prev = tmp->prev;
+		if (tmp->prev != NULL)
+			tmp->prev->next = dod;
+		else
+			head = dod;
+		tmp->prev = dod;
+		
+		dod->val = valu;
+
+	}
+
+
+
+}
+void add_by_place_next(node * &head, int n, float valu)
+{
+	bool range = 0;
+	node *tmp = head;
+	for (int i = 0; i<n; i++)
+	{
+		tmp = tmp->next;
+		if (tmp == NULL)
+		{
+			cout << " out of the range\n";
+			range = 1;
+			break;
+
+		}
+
+
+	}
+	if (range != 1) {
+		node * dod = new node;
+		dod->next = tmp->next;
+		dod->prev = tmp;
+		tmp->next = dod;
+
+		dod->val = valu;
+
+	}
+
+
+
+}
+void delete_by_value(node*&head, int valu)
+{
+	node *tmp, *p;
+	tmp = head;
+	while (tmp != NULL)
+	{
+		if (tmp->val == valu)
+		{
+			if (tmp != head)
+			{
+				p = tmp->next;
+				tmp = tmp->prev;
+
+				tmp->next = p;
+			}
+			else {
+				head = head->next;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
+node * element(node *wsk, int n)
+{
+	bool zakres = 0;
+	node *tmp = wsk;
+
+	for (int i = 1; i<n; i++)
+	{
+		if (tmp == NULL)
+		{
+			cout << "element z poza listy\n";
+			return 0;
+
+		}
+
+
+		tmp = tmp->next;
+
+	}
+	if (n == 0)
+	{
+		cout << "brak notacji amerykanskiej";
+		return 0;
+	}
+	return tmp;
+}
+void look_by_place(node *wsk, int n)
+{
+	bool zakres = 0;
+	node *tmp = wsk;
+	int p;
+	for (int i = 0; i<n; i++)
+	{
+		if (tmp == NULL)
+		{
+			cout << "element z poza listy\n";
+			zakres = 1;
+			break;
+
+		}
+
+		else
+			p = tmp->val;
+		tmp = tmp->next;
+
+	}
+
+
+	if (zakres != 1)
+		cout << "wartosc listy dla " << n + 1 << ". elementu wynosi " << p << endl;
+
+
+}
+void add(node*&head, float valu)
+{
+	{
+		node* tmp = new node;
+		tmp->val = valu;
+
+
+		if (head == NULL)
+		{
+			tmp->next = head;
+			head = tmp;
+
+		}
+
+		else
+		{
+			tmp->next = head;
+			head = tmp;
+			tmp->next->prev = tmp;
+		}
+
+
+
+	}
+}
+node *div_by_position(node *head, int n)
+{
+	node *temp = head, *second;
+
+	temp = head;
+	for (int i = 0; i < n; i++)
+	{
+		temp = temp->next;
+	}
+
+	second = temp;
+	temp->prev->next = NULL;
+	second->prev = NULL;
+	return second;
+
+
+
+
+
+}
+void show(node *&head)
+{
+	node *tmp = head;
+	while (tmp != NULL)
+	{
+
+		cout << tmp->val << endl;
+		tmp = tmp->next;
+
+	}
+}
+int siz(node*&head)
+{
+	node *tmp = head;
+	int n = 0;
+	while (tmp)
+	{
+		n++;
+		tmp = tmp->next;
+	}
+	return n;
+}
+void swap(node*&head, int pos1, int pos2)
+{
+
+	if ((pos2 < siz(head) && pos1 < siz(head)) && (pos1 >= 0 && pos2 >= 0))
+	{
+		node* temp1 = head;
+		node* temp2 = head;
+		node* prev1;
+		node* prev2;
+		node* next1;
+		node* next2;
+		if (pos1 > pos2)
+			swap(pos1, pos2);
+
+
+
+		for (int i = 0; i < pos1; i++)
+			temp1 = temp1->next;
+		for (int i = 0; i < pos2; i++)
+			temp2 = temp2->next;
+
+		if (pos1 + 1 != pos2 && pos1 - 1 != pos2)
+		{
+			prev1 = temp1->prev;
+			prev2 = temp2->prev;
+			next1 = temp1->next;
+			next2 = temp2->next;
+
+			temp2->next = next1;
+			temp2->prev = prev1;
+			temp1->next = next2;
+			temp1->prev = prev2;
+
+			if (prev1 != NULL) prev1->next = temp2; else head = temp2;
+			if (prev2 != NULL) prev2->next = temp1;
+			if (next1 != NULL) next1->prev = temp2;
+			if (next2 != NULL) next2->prev = temp1;
+		}
+		else
+		{
+
+			prev1 = temp1->prev;
+			temp1->next = temp2->next;
+			temp2->next = temp1;
+			temp1->prev = temp2;
+			temp2->prev = prev1;
+			if (prev1 != NULL)prev1->next = temp2; else head = temp2;
+			if (temp1->next != NULL)temp1->next->prev = temp1;
+
+
+		}
+
+
+
+
+
+
+
+
+
+	}
+	else
+		cout << "element over the size of a list\n";
+
+
+
+
+
+
+
+
+
+
+
+}
+void sort_by_selection(node* &head)
+{
+
+	node* temp_first = head;
+	node* temp_min = head;
+	float MIN = head->val;
+	int index = 0;
+	show(head);
+	bool change = false;
+	cout << endl;
+	for (int i = 0; i < siz(head); i++)
+	{
+		index = i;
+		temp_min = temp_first;
+		MIN = temp_min->val;
+
+		for (int j = i; j < siz(head); j++)
+		{
+
+			if (MIN > temp_min->val)
+			{
+				MIN = temp_min->val;
+				index = j;
+				change = true;
+				cout << "." << index << " ." << endl;
+			}
+
+			temp_min = temp_min->next;
+		}
+
+		temp_first = temp_first->next;
+		if (index != i)
+		{
+			swap(head, i, index);
+		}
+		show(head);
+		cout << endl << i << "\t" << index << endl << endl;
+		change = false;
+	}
+
+
+}
+void insertion_sort(node *head)
+{
+	node* sorted = NULL;
+	node*temp1 = head->next;
+	add(sorted, head->val);
+	node*temp2 = sorted;
+	
+
+	while (temp1) {
+		
+		temp2 = sorted;
+		
+		for (int i = 0; temp2!=NULL; i++)
+		{
+		
+				if (temp1->val <= temp2->val)
+				{
+					
+					add_by_place_prev(sorted, i, temp1->val);
+					break;
+				}
+				else {
+					if (temp2->next == NULL) 
+					{
+						add_by_place_next(sorted, i, temp1->val);
+						break;
+					}
+				}
+			temp2 = temp2->next;
+		
+		}
+		temp1 = temp1->next;
+		
+	 }
+
+
+	cout << endl;
+	show(sorted);
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+int main()
+{
+
+	node* head = NULL;
+
+	add(head, 10);
+	add(head, 4);
+	add(head, 2);
+	add(head, 7);
+	add(head, 4);
+	add(head, 5);
+	int pos1, pos2;
+	//cin >> pos1 >> pos2;
+	//swap(head, pos1, pos2);
+	//sort_by_selection(head);
+	insertion_sort(head);
+	
+
+		//show(head);
+	system("pause");
+
+
+
+}
